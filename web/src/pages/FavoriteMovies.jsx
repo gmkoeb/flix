@@ -5,6 +5,10 @@ import MovieCard from "../components/MovieCard"
 
 export default function FavoriteMovies(){
   const [favoriteMovies, setFavoriteMovies] = useState([])
+  
+  const handleRemoveFavorite = (id) => {
+    setFavoriteMovies(favoriteMovies.filter(movie => movie.id !== id))
+  }
   async function getFavoriteMovies(){
     const authorization = {
       headers: {
@@ -30,7 +34,9 @@ export default function FavoriteMovies(){
               duration={movie.duration}
               actors={movie.actors}
               releaseDate={movie.release_date}
-              movieGenres={movie.movie_genres} />
+              movieGenres={movie.movie_genres}
+              isFavorite={true}
+              onRemove={handleRemoveFavorite} />
         ))}
       </div>
     </section>

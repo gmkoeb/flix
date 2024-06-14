@@ -1,4 +1,4 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Play, Plus, ThumbsUp, CircleCheck } from "lucide-react"
 import axios from "axios"
 import Cookies from 'js-cookie'
@@ -6,7 +6,6 @@ import Cookies from 'js-cookie'
 export default function MovieCard(props){
   const [showDetails, setShowDetails] = useState('hidden')
   const [isFavorite, setIsFavorite] = useState(props.isFavorite)
-  const [unfavorite, setUnfavorite] = useState(false)
   const mouseEnterTimeoutRef = useRef(null);
   const mouseLeaveTimeoutRef = useRef(null);
 
@@ -17,7 +16,6 @@ export default function MovieCard(props){
 
   async function handleAddFavoriteMovie(movie_id){
     setIsFavorite(true)
-    setUnfavorite(false)
     const body = {
       movie_id: movie_id
     }
@@ -27,13 +25,15 @@ export default function MovieCard(props){
   }
 
   async function handleRemoveFavoriteMovie(movie_id){
+    setIsFavorite(false)
     const authorization = {
       headers: {
         'Authorization': `Bearer ${Cookies.get('token')}`
       }
     }
-    setUnfavorite(true)
+    
     await axios.delete(`http://localhost:3000/favorite_movies/${movie_id}`, authorization)
+    props.onRemove(movie_id)
   }
 
   const handleMouseEnter = () => {
@@ -49,6 +49,9 @@ export default function MovieCard(props){
       setShowDetails('hidden');
     }, 300);
   };
+  useEffect(() => {
+    setIsFavorite(props.isFavorite);
+  }, [props.isFavorite])
   return(
     <div onMouseLeave={handleMouseLeave} onMouseEnter={handleMouseEnter} 
          className="bg-gray-950 rounded-lg w-[15%] h-fit hover:scale-150 hover:w-[25vw] hover:translate-x-[5vw] duration-300 delay-300 hover:cursor-pointer">
@@ -60,7 +63,7 @@ export default function MovieCard(props){
             <Play fill="black" className="mr-2"/>
             <h5>Watch Now</h5>
           </div>
-          {props.isFavorite || isFavorite && !unfavorite ? (
+          {isFavorite  ? (
             <>
               <CircleCheck onClick={() => handleRemoveFavoriteMovie(props.id)} width={32} height={32}/>
               <ThumbsUp width={28} height={28} className="border-2 rounded-full p-1" />
