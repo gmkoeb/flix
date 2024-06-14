@@ -33,7 +33,9 @@ export default function MovieCard(props){
     }
     
     await axios.delete(`http://localhost:3000/favorite_movies/${movie_id}`, authorization)
-    props.onRemove(movie_id)
+    if (props.onRemove) {
+      props.onRemove(movie_id)
+    }
   }
 
   const handleMouseEnter = () => {
