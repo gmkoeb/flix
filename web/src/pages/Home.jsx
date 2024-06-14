@@ -10,7 +10,6 @@ export default function Home(){
   const [genres, setGenres] = useState([])
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [favoriteMovies, setFavoriteMovies] = useState([])
-  const [isFavorite, setIsFavorite] = useState(false)
 
   async function getFavoriteMovies(){
     const authorization = {
