@@ -10,6 +10,6 @@ Rails.application.routes.draw do
   }
 
   resources :genres, only: %w[index]
-  resources :favorite_movies, only: %w[index create]
+  resources :favorite_movies, only: %w[index create destroy]
   get 'check_session', to: 'check_session#check'
 end

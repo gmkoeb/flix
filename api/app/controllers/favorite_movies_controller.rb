@@ -12,6 +12,11 @@ class FavoriteMoviesController < ApplicationController
     @current_user.favorite_movies.create(movie:)
   end
 
+  def destroy
+    id = params.permit(:id)[:id]
+    favorite_movie = @current_user.favorite_movies.find_by(movie_id: id)
+    favorite_movie.delete
+  end
   private 
 
   def format_movies(favorite_movies)

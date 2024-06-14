@@ -4,13 +4,20 @@ import axios from "axios"
 import Cookies from 'js-cookie'
 
 export default function MovieCard(props){
+  const [showDetails, setShowDetails] = useState('hidden')
+  const [isFavorite, setIsFavorite] = useState(props.isFavorite)
+  const [unfavorite, setUnfavorite] = useState(false)
+  const mouseEnterTimeoutRef = useRef(null);
+  const mouseLeaveTimeoutRef = useRef(null);
+
   function toSnakeCase(title){
     const lowerCased = title.toLowerCase()
     return lowerCased.replace(/ /g, '_')
   }
 
-  async function handleFavoriteMovie(movie_id){
+  async function handleAddFavoriteMovie(movie_id){
     setIsFavorite(true)
+    setUnfavorite(false)
     const body = {
       movie_id: movie_id
     }
@@ -19,10 +26,16 @@ export default function MovieCard(props){
     } })
   }
 
-  const [showDetails, setShowDetails] = useState('hidden')
-  const [isFavorite, setIsFavorite] = useState(props.isFavorite)
-  const mouseEnterTimeoutRef = useRef(null);
-  const mouseLeaveTimeoutRef = useRef(null);
+  async function handleRemoveFavoriteMovie(movie_id){
+    const authorization = {
+      headers: {
+        'Authorization': `Bearer ${Cookies.get('token')}`
+      }
+    }
+    setUnfavorite(true)
+    await axios.delete(`http://localhost:3000/favorite_movies/${movie_id}`, authorization)
+  }
+
   const handleMouseEnter = () => {
     clearTimeout(mouseLeaveTimeoutRef.current);
     mouseEnterTimeoutRef.current = setTimeout(() => {
@@ -47,14 +60,14 @@ export default function MovieCard(props){
             <Play fill="black" className="mr-2"/>
             <h5>Watch Now</h5>
           </div>
-          {props.isFavorite || isFavorite ? (
+          {props.isFavorite || isFavorite && !unfavorite ? (
             <>
-              <CircleCheck width={32} height={32}/>
+              <CircleCheck onClick={() => handleRemoveFavoriteMovie(props.id)} width={32} height={32}/>
               <ThumbsUp width={28} height={28} className="border-2 rounded-full p-1" />
             </>
           ) : (
             <>
-              <Plus onClick={() => handleFavoriteMovie(props.id)} strokeWidth={3} width={28} height={28} className="border-2 rounded-full p-1 font-bold"/>
+              <Plus onClick={() => handleAddFavoriteMovie(props.id)} strokeWidth={3} width={28} height={28} className="border-2 rounded-full p-1 font-bold"/>
               <ThumbsUp width={28} height={28} className="border-2 rounded-full p-1" />
             </>
           )}
