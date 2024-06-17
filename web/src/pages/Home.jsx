@@ -55,7 +55,7 @@ export default function Home(){
         {genres.map(genre => (
           <section className="mb-10" key={genre.id}>
             <h2 className="text-2xl font-bold mb-3 flex items-center hover:cursor-pointer">{genre.name} <ChevronRight strokeWidth={3} width={32} height={32} className="-mb-1"/></h2>
-            <div className="flex flex-wrap gap-5">
+            <div className="flex flex-wrap gap-2">
               {genre.movies.map(movie => (
                 <MovieCard 
                           key={movie.id} 
