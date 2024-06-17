@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from "react"
 import { Play, Plus, ThumbsUp, CircleCheck, CircleChevronDown } from "lucide-react"
 import { api } from "../../api/axios"
 import Cookies from 'js-cookie'
-import { CSSTransition } from 'react-transition-group';
 import { Tooltip } from 'react-tooltip'
 
 export default function MovieCard(props){
@@ -123,13 +122,8 @@ export default function MovieCard(props){
             <CircleChevronDown data-tooltip-id="movieDetails" data-tooltip-content="Details" onClick={() => handleToggleDescription()} className="hover:cursor-pointer" width={32} height={32}/>
             <Tooltip id="movieDetails" />
           </div>
-          <CSSTransition
-            in={toggleDescription}
-            timeout={300}
-            classNames="section"
-            unmountOnExit
-            >
-            <section className={`section`}  >
+          {toggleDescription &&
+            <section>
               <p>{props.description}</p>
               <div className="flex gap-5 mt-3">
                 <p>{new Date(props.releaseDate).getFullYear()}</p>
@@ -158,7 +152,7 @@ export default function MovieCard(props){
                 </div>
               </div>
             </section>
-          </CSSTransition>
+          }
         </div>
       </div>
     </>
