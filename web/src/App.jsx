@@ -6,7 +6,7 @@ import SignIn from './pages/SignIn';
 import FavoriteMovies from './pages/FavoriteMovies';
 import ProtectedRoute from './ProtectedRoute';
 import Cookies from 'js-cookie'
-import axios from 'axios';
+import { api } from '../api/axios';
 
 async function isAuthenticated() {
   const token = Cookies.get('token')
@@ -21,7 +21,7 @@ async function isAuthenticated() {
         'Authorization': `Bearer ${token}`,
       },
     };
-    const response = await axios.get('http://localhost:3000/check_session', authorization);
+    const response = await api.get('/check_session', authorization);
 
     return response.data.session === 'Authorized';
   } catch (error) {

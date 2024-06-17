@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react"
 import { Play, Plus, ThumbsUp, CircleCheck } from "lucide-react"
-import axios from "axios"
+import { api } from "../../api/axios"
 import Cookies from 'js-cookie'
 
 export default function MovieCard(props){
@@ -19,7 +19,7 @@ export default function MovieCard(props){
     const body = {
       movie_id: movie_id
     }
-    await axios.post('http://localhost:3000/favorite_movies', body, { headers: {
+    await api.post('/favorite_movies', body, { headers: {
       'Authorization': `Bearer ${Cookies.get('token')}`
     } })
   }
@@ -32,7 +32,7 @@ export default function MovieCard(props){
       }
     }
     
-    await axios.delete(`http://localhost:3000/favorite_movies/${movie_id}`, authorization)
+    await api.delete(`/favorite_movies/${movie_id}`, authorization)
     if (props.onRemove) {
       props.onRemove(movie_id)
     }
@@ -57,7 +57,7 @@ export default function MovieCard(props){
   return(
     <div onMouseLeave={handleMouseLeave} onMouseEnter={handleMouseEnter} 
          className="bg-gray-950 rounded-lg w-[15%] h-fit hover:scale-150 hover:w-[25vw] hover:translate-x-[5vw] duration-300 delay-300 hover:cursor-pointer">
-      <img className="w-[100%] h-48 rounded-lg" src={`/posters/${toSnakeCase(props.title)}.png`} alt="" />
+      <img className="w-[100%] h-48 rounded-lg" src={`./src/assets/posters/${toSnakeCase(props.title)}.png`} alt="" />
       <div className={`${showDetails} p-5`}>
         <h3 className="text-xl font-bold text-center mb-8">{props.title}</h3>
         <div className="flex gap-2 items-center mb-4">     

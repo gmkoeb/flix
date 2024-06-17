@@ -1,14 +1,14 @@
 import { NavLink } from "react-router-dom";
 import Cookies from 'js-cookie'
-import axios from "axios"
 import { useEffect, useState } from "react";
 import { User } from "lucide-react";
 import { checkSession } from "../lib/checkSession";
+import { api } from "../../api/axios";
 
 export default function Header(){
   const handleLinkActivation = ({ isActive }) => {
     if (isActive) {
-      return 'font-bold';
+      return 'font-bold'
     }
     return 'hover:font-bold duration-300'
   }
@@ -25,7 +25,7 @@ export default function Header(){
         'Authorization': `Bearer ${Cookies.get('token')}`
       }
     }
-    axios.delete('http://localhost:3000/logout', authorization)
+    api.delete('/logout', authorization)
       .then(response => {
         Cookies.remove('token')
         Cookies.remove('user')

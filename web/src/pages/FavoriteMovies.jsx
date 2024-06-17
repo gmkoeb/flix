@@ -1,7 +1,7 @@
-import axios from "axios"
 import { useEffect, useState } from "react"
 import Cookies from 'js-cookie'
 import MovieCard from "../components/MovieCard"
+import { api } from "../../api/axios"
 
 export default function FavoriteMovies(){
   const [favoriteMovies, setFavoriteMovies] = useState([])
@@ -15,7 +15,7 @@ export default function FavoriteMovies(){
         'Authorization': `Bearer ${Cookies.get('token')}`
       }
     }
-    const response = await axios.get('http://localhost:3000/favorite_movies', authorization)
+    const response = await api.get('/favorite_movies', authorization)
     setFavoriteMovies(response.data.favoriteMovies)
   }
   useEffect(() => {

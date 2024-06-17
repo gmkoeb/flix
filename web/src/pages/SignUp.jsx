@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Formik, Form } from 'formik';
 import TextInput from '../components/TextInput';
 import { useNavigate } from 'react-router-dom';
+import { api } from '../../api/axios';
 export default function SignUp() {
   const [error, setError] = useState('')
   const navigate = useNavigate()
@@ -16,7 +16,7 @@ export default function SignUp() {
             password: values.password
           }
         };
-        axios.post('http://localhost:3000/signup', userData)
+        api.post('/signup', userData)
           .then(() => {
             navigate('/sign_in')
             setSubmitting(false);

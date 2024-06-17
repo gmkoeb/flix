@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie'
-import axios from "axios"
+import { api } from '../../api/axios'
 
 export async function checkSession(setIsLoggedIn){
   const authorization = {
@@ -7,7 +7,7 @@ export async function checkSession(setIsLoggedIn){
       'Authorization': `Bearer ${Cookies.get('token')}`
     }
   }
-  const response = await axios.get('http://localhost:3000/check_session', authorization)
+  const response = await api.get('/check_session', authorization)
 
   if (response.data.session === 'Authorized'){
     setIsLoggedIn(true)

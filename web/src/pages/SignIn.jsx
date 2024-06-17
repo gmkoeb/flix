@@ -1,6 +1,6 @@
 import { Form, Formik } from "formik";
 import TextInput from "../components/TextInput";
-import axios from 'axios';
+import { api } from "../../api/axios";
 import Cookies from 'js-cookie'
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -17,7 +17,7 @@ export default function SignIn(){
     };
 
     try {
-      const response = await axios.post('http://localhost:3000/login', userData)
+      const response = await api.post('/login', userData)
       const token = response.data.status.data.Authorization.token
       Cookies.set('token', token, { expires: 1 })
       Cookies.set('user', response.data.status.data.user.username, { expires: 1 })
