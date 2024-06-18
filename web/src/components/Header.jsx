@@ -10,7 +10,7 @@ export default function Header(){
     if (isActive) {
       return 'font-bold'
     }
-    return 'hover:font-bold duration-300'
+    return 'hover:opacity-85 duration-300'
   }
 
   const [isLoggedIn, setIsLoggedIn] = useState(false)

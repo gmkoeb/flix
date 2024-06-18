@@ -56,7 +56,7 @@ export default function Home(){
         <section className="mx-10 mt-10">
         {genres.map(genre => (
           <section id="section" className="mb-10" key={genre.id}>
-            <div className="flex align-middle">
+            <div className="flex align-middle mx-2">
               <Link to={`/movies/${genre.name}`} className="text-2xl font-bold mb-3 flex items-center hover:cursor-pointer">
                 <span onMouseLeave={() => setLinkHovered(null)} onMouseEnter={() => setLinkHovered(genre.name)}>{genre.name}</span>
                 <CSSTransition

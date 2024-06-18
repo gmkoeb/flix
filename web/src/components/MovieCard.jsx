@@ -26,7 +26,7 @@ export default function MovieCard(props){
     if (toggleDescription) {
       return 'absolute w-[45%] right-0 left-[27%] z-100 bg-[#111111] rounded-lg h-fit duration-300'
     } else{
-      return 'bg-[#111111] rounded-lg w-[20rem] h-fit hover:scale-110 duration-300 delay-300 hover:cursor-pointer'
+      return 'bg-[#111111] rounded-lg w-[20rem] h-fit hover:scale-125 duration-300 delay-300 hover:cursor-pointer'
     }
   }
 
