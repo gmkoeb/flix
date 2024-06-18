@@ -4,6 +4,7 @@ import { api } from "../../api/axios"
 import MovieCard from "../components/MovieCard"
 import Cookies from 'js-cookie'
 import { ChevronRight } from "lucide-react"
+import { checkIfMovieIsFavorited } from "../lib/checkIfMovieIsFavorited"
 
 export default function GenreMovies(){
   let { genre } = useParams()
@@ -19,15 +20,6 @@ export default function GenreMovies(){
     }
     const response = await api.get('/favorite_movies', authorization)
     setFavoriteMovies(response.data.favoriteMovies)
-  }
-    
-  function checkIfMovieIsFavorited(movie){
-    const includes = favoriteMovies.some(favoriteMovie => favoriteMovie.id === movie.id)
-    if (includes){
-      return true
-    } else {
-      return false
-    }
   }
 
   async function getGenreMovies(){
@@ -64,7 +56,7 @@ export default function GenreMovies(){
             actors={movie.actors}
             releaseDate={movie.release_date}
             movieGenres={movie.movie_genres}
-            isFavorite={checkIfMovieIsFavorited(movie)}
+            isFavorite={checkIfMovieIsFavorited(movie, favoriteMovies)}
           />
         ))}
       </section>

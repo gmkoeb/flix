@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react"
-import Cookies from 'js-cookie'
 import MovieCard from "../components/MovieCard"
-import { api } from "../../api/axios"
 import { Link } from "react-router-dom"
+import { getFavoriteMovies } from "../lib/getFavoriteMovies"
 
 export default function FavoriteMovies(){
   const [favoriteMovies, setFavoriteMovies] = useState([])
@@ -10,17 +9,9 @@ export default function FavoriteMovies(){
   const handleRemoveFavorite = (id) => {
     setFavoriteMovies(favoriteMovies.filter(movie => movie.id !== id))
   }
-  async function getFavoriteMovies(){
-    const authorization = {
-      headers: {
-        'Authorization': `Bearer ${Cookies.get('token')}`
-      }
-    }
-    const response = await api.get('/favorite_movies', authorization)
-    setFavoriteMovies(response.data.favoriteMovies)
-  }
+
   useEffect(() => {
-    getFavoriteMovies()
+    getFavoriteMovies(setFavoriteMovies)
   }, [])
   return(
     <section>

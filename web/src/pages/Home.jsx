@@ -1,27 +1,19 @@
 import { useEffect, useState } from "react"
 import MovieCard from "../components/MovieCard"
-  import Cookies from 'js-cookie'
+import Cookies from 'js-cookie'
 import { Link } from "react-router-dom"
 import { ChevronRight } from 'lucide-react';
 import { checkSession } from "../lib/checkSession"
 import { api } from "../../api/axios"
 import { CSSTransition } from 'react-transition-group';
+import { getFavoriteMovies } from "../lib/getFavoriteMovies";
+import { checkIfMovieIsFavorited } from "../lib/checkIfMovieIsFavorited";
 
 export default function Home(){
   const [genres, setGenres] = useState([])
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [favoriteMovies, setFavoriteMovies] = useState([])
   const [linkHovered, setLinkHovered] = useState(null)
-
-  async function getFavoriteMovies(){
-    const authorization = {
-      headers: {
-        'Authorization': `Bearer ${Cookies.get('token')}`
-      }
-    }
-    const response = await api.get('/favorite_movies', authorization)
-    setFavoriteMovies(response.data.favoriteMovies)
-  }
 
   async function getGenres(){
     const authorization = {
@@ -32,21 +24,12 @@ export default function Home(){
     const response = await api.get('/genres', authorization)
     setGenres(response.data.genres)
   }
-
-    function checkIfMovieIsFavorited(movie){
-      const includes = favoriteMovies.some(favoriteMovie => favoriteMovie.id === movie.id)
-      if (includes){
-        return true
-      } else {
-        return false
-      }
-    }
   
   useEffect(() => {
     if (Cookies.get('token')) {
       checkSession(setIsLoggedIn)
       getGenres()
-      getFavoriteMovies()
+      getFavoriteMovies(setFavoriteMovies)
     }
   }, []);
 
@@ -82,7 +65,7 @@ export default function Home(){
                   actors={movie.actors}
                   releaseDate={movie.release_date}
                   movieGenres={movie.movie_genres}
-                  isFavorite={checkIfMovieIsFavorited(movie)} />
+                  isFavorite={checkIfMovieIsFavorited(movie, favoriteMovies)} />
               ))}
             </div>
           </section>
