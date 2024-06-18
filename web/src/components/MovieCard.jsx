@@ -18,7 +18,7 @@ export default function MovieCard(props){
 
   function cardWrapperToggle(){
     if (toggleDescription) {
-      return 'absolute w-[100vw] h-[100vh] z-100 bg-black bg-opacity-50'
+      return 'absolute w-[100vw] h-[600vh] z-100 bg-black bg-opacity-50'
     } 
   }
 
@@ -88,15 +88,16 @@ export default function MovieCard(props){
     setToggleDescription(false)
     setShowControls('hidden')
   }
+
   useEffect(() => {
     setIsFavorite(props.isFavorite);
   }, [props.isFavorite])
   return(
     <>
-      <section onClick={() => handleClickOut()} className={`${cardWrapperToggle()} -translate-y-10`}>
+      <section onClick={() => handleClickOut()} className={`${cardWrapperToggle()} -translate-x-10 -translate-y-1/2`}>
       </section>
       <div onMouseLeave={handleMouseLeave} onMouseEnter={handleMouseEnter} 
-          className={`${isToggled()}`}>
+           className={`${isToggled()}`}>
         <img className={`w-[100%] h-48 rounded-lg ${handleToggledImage()}`} src={`./src/assets/posters/${toSnakeCase(props.title)}.png`} alt="" />
         <div className={`${showControls} p-5`}>
           <h3 className="text-xl font-bold text-center mb-8">{props.title}</h3>
