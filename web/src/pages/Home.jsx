@@ -5,11 +5,13 @@ import { Link } from "react-router-dom"
 import { ChevronRight } from 'lucide-react';
 import { checkSession } from "../lib/checkSession"
 import { api } from "../../api/axios"
+import { CSSTransition } from 'react-transition-group';
 
 export default function Home(){
   const [genres, setGenres] = useState([])
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [favoriteMovies, setFavoriteMovies] = useState([])
+  const [linkHovered, setLinkHovered] = useState(null)
 
   async function getFavoriteMovies(){
     const authorization = {
@@ -31,14 +33,14 @@ export default function Home(){
     setGenres(response.data.genres)
   }
 
-  function checkIfMovieIsFavorited(movie){
-    const includes = favoriteMovies.some(favoriteMovie => favoriteMovie.id === movie.id)
-    if (includes){
-      return true
-    } else {
-      return false
+    function checkIfMovieIsFavorited(movie){
+      const includes = favoriteMovies.some(favoriteMovie => favoriteMovie.id === movie.id)
+      if (includes){
+        return true
+      } else {
+        return false
+      }
     }
-  }
   
   useEffect(() => {
     if (Cookies.get('token')) {
@@ -53,20 +55,34 @@ export default function Home(){
         { isLoggedIn ? (
         <section className="mx-10 mt-10">
         {genres.map(genre => (
-          <section className="mb-10" key={genre.id}>
-            <h2 className="text-2xl font-bold mb-3 flex items-center hover:cursor-pointer">{genre.name} <ChevronRight strokeWidth={3} width={32} height={32} className="-mb-1"/></h2>
+          <section id="section" className="mb-10" key={genre.id}>
+            <div className="flex align-middle">
+              <Link to={`/movies/${genre.name}`} className="text-2xl font-bold mb-3 flex items-center hover:cursor-pointer">
+                <span onMouseLeave={() => setLinkHovered(null)} onMouseEnter={() => setLinkHovered(genre.name)}>{genre.name}</span>
+                <CSSTransition
+                  in={linkHovered === genre.name} 
+                  timeout={500}
+                  classNames="seeAll"
+                  unmountOnExit>
+                  <div className="flex -z-10 h-fit w-fit items-center">
+                    <span className="text-sm ml-4 mt-[6px]">See all</span>
+                    <ChevronRight strokeWidth={3} width={26} height={26} className="-mb-1"/>
+                  </div>
+                </CSSTransition>
+              </Link>
+            </div>
             <div className="flex flex-wrap gap-2">
               {genre.movies.map(movie => (
                 <MovieCard 
-                          key={movie.id} 
-                          id={movie.id}
-                          title={movie.title} 
-                          description={movie.description}
-                          duration={movie.duration}
-                          actors={movie.actors}
-                          releaseDate={movie.release_date}
-                          movieGenres={movie.movie_genres}
-                          isFavorite={checkIfMovieIsFavorited(movie)} />
+                  key={movie.id} 
+                  id={movie.id}
+                  title={movie.title} 
+                  description={movie.description}
+                  duration={movie.duration}
+                  actors={movie.actors}
+                  releaseDate={movie.release_date}
+                  movieGenres={movie.movie_genres}
+                  isFavorite={checkIfMovieIsFavorited(movie)} />
               ))}
             </div>
           </section>

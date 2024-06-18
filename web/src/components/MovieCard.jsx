@@ -98,7 +98,7 @@ export default function MovieCard(props){
       </section>
       <div onMouseLeave={handleMouseLeave} onMouseEnter={handleMouseEnter} 
            className={`${isToggled()}`}>
-        <img className={`w-[100%] h-48 rounded-lg ${handleToggledImage()}`} src={`./src/assets/posters/${toSnakeCase(props.title)}.png`} alt="" />
+        <img className={`w-[100%] h-48 rounded-lg ${handleToggledImage()}`} src={`/posters/${toSnakeCase(props.title)}.png`} alt="" />
         <div className={`${showControls} p-5`}>
           <h3 className="text-xl font-bold text-center mb-8">{props.title}</h3>
           <div className="flex gap-2 items-center justify-between mb-5">

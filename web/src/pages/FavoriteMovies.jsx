@@ -43,7 +43,7 @@ export default function FavoriteMovies(){
             ))}
           </>
         ) : (
-          <h2>You have added no favorite movies to your movies list. <Link className="underline" to={'/'}>Click here to browse our full catalog.</Link></h2>
+          <h2 className="text-gray-400 mt-20">You have added no favorite movies to your movies list. <Link className="underline" to={'/'}>Click here to browse our full catalog.</Link></h2>
         )}
       </div>
     </section>

@@ -9,7 +9,7 @@ Rails.application.routes.draw do
     registrations: 'users/registrations'
   }
 
-  resources :genres, only: %w[index]
+  resources :genres, only: %w[index show]
   resources :favorite_movies, only: %w[index create destroy]
   get 'check_session', to: 'check_session#check'
 end

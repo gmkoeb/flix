@@ -5,6 +5,7 @@ import Start from './Start';
 import SignIn from './pages/SignIn';
 import FavoriteMovies from './pages/FavoriteMovies';
 import ProtectedRoute from './ProtectedRoute';
+import GenreMovies from './pages/GenreMovies';
 import Cookies from 'js-cookie'
 import { api } from '../api/axios';
 
@@ -43,9 +44,8 @@ const router = createBrowserRouter([
   {
     element: <ProtectedRoute checkAuth={isAuthenticated}/>,
     children: [
-      {
-        path: '/favorite_movies', element: <FavoriteMovies /> 
-      }
+      {path: '/favorite_movies', element: <FavoriteMovies />},
+      {path: '/movies/:genre', element: <GenreMovies />}
     ]
   }
 ]);
