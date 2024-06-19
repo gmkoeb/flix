@@ -14,17 +14,33 @@ export default function Home(){
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [favoriteMovies, setFavoriteMovies] = useState([])
   const [linkHovered, setLinkHovered] = useState(null)
+  const [likedMovies, setLikedMovies] = useState([])
 
   async function getGenres(){
     const response = await api.get('/genres')
     setGenres(response.data.genres)
   }
-  
+
+  function checkIfMovieIsLiked(movie){
+    const includes = likedMovies.some(likedMovie => likedMovie.id === movie.id)
+    if (includes){
+      return true
+    } else {
+      return false
+    }
+  }
+
+  async function getLikedMovies(){
+    const response = await api.get('/liked_movies')
+    setLikedMovies(response.data.likedMovies)
+  }
+
   useEffect(() => {
     if (Cookies.get('token')) {
       checkSession(setIsLoggedIn)
       getGenres()
       getFavoriteMovies(setFavoriteMovies)
+      getLikedMovies()
     }
   }, []);
 
@@ -65,7 +81,8 @@ export default function Home(){
                   actors={movie.actors}
                   releaseDate={movie.release_date}
                   movieGenres={movie.movie_genres}
-                  isFavorite={checkIfMovieIsFavorited(movie, favoriteMovies)} />
+                  isFavorite={checkIfMovieIsFavorited(movie, favoriteMovies)}
+                  isLiked={checkIfMovieIsLiked(movie)} />
               ))}
             </div>
           </section>

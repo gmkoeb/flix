@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react"
-import { Play, Plus, ThumbsUp, CircleCheck, CircleChevronDown } from "lucide-react"
+import { Play, Plus, ThumbsUp, CircleCheck, CircleChevronDown, ThumbsDown } from "lucide-react"
 import { api } from "../../api/axios"
 import { Tooltip } from 'react-tooltip'
 
@@ -7,6 +7,7 @@ export default function MovieCard(props){
   const [showControls, setShowControls] = useState('hidden')
   const [isFavorite, setIsFavorite] = useState(props.isFavorite)
   const [toggleDescription, setToggleDescription] = useState(false)
+  const [isLiked, setIsLiked] = useState(props.isLiked)
   const mouseEnterTimeoutRef = useRef(null)
   const mouseLeaveTimeoutRef = useRef(null)
 
@@ -41,6 +42,19 @@ export default function MovieCard(props){
       movie_id: movie_id
     }
     await api.post('/favorite_movies', body)
+  }
+
+  async function handleLike(movie_id){
+    setIsLiked(true)
+    const body = {
+      movie_id: movie_id
+    }
+    await api.post('/liked_movies', body)
+  }
+
+  async function handleDislike(movie_id){
+    setIsLiked(false)
+    await api.delete(`/liked_movies/${movie_id}`)
   }
 
   async function handleRemoveFavoriteMovie(movie_id){
@@ -110,7 +124,22 @@ export default function MovieCard(props){
                   <Tooltip id="addFavorite" />
                 </>
               )}
-              <ThumbsUp width={28} height={28} className="border-2 rounded-full p-1 hover:cursor-pointer" />
+              {isLiked ? (
+                <>
+                  <ThumbsUp 
+                    data-tooltip-id="unlike" 
+                    data-tooltip-content="Unlike" 
+                    onClick={() => handleDislike(props.id)} 
+                    strokeWidth={3} width={28} height={28} 
+                    className="hover:cursor-pointer border-2 rounded-full p-1 font-bold bg-gray-500"/>
+                  <Tooltip id="unlike" />
+                </>
+              ): (
+                <>
+                  <ThumbsUp data-tooltip-id="like" data-tooltip-content="Like" onClick={() => handleLike(props.id)} trokeWidth={3} width={28} height={28} className="hover:cursor-pointer border-2 rounded-full p-1 font-bold" />
+                  <Tooltip id="like" />
+                </>
+              )}
             </div>
             <CircleChevronDown data-tooltip-id="movieDetails" data-tooltip-content="Details" onClick={() => handleToggleDescription()} className="hover:cursor-pointer" width={32} height={32}/>
             <Tooltip id="movieDetails" />
