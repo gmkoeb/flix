@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import { api } from "../../api/axios"
 import MovieCard from "../components/MovieCard"
-import Cookies from 'js-cookie'
 import { ChevronRight } from "lucide-react"
 import { checkIfMovieIsFavorited } from "../lib/checkIfMovieIsFavorited"
 
@@ -13,23 +12,12 @@ export default function GenreMovies(){
 
 
   async function getFavoriteMovies(){
-    const authorization = {
-      headers: {
-        'Authorization': `Bearer ${Cookies.get('token')}`
-      }
-    }
-    const response = await api.get('/favorite_movies', authorization)
+    const response = await api.get('/favorite_movies')
     setFavoriteMovies(response.data.favoriteMovies)
   }
 
   async function getGenreMovies(){
-    const token = Cookies.get('token')
-    const authorization = {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    };
-    const response = await api.get(`/genres/${genre}`, authorization)
+    const response = await api.get(`/genres/${genre}`)
     setMovies(response.data.movies)
   }
 

@@ -15,25 +15,17 @@ export default function Header(){
 
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   useEffect(() => {
+    if (Cookies.get('token')) {
       checkSession(setIsLoggedIn)
+    }
   }, [])
   
 
-  function handleLogout(){
-    const authorization = {
-      headers: {
-        'Authorization': `Bearer ${Cookies.get('token')}`
-      }
-    }
-    api.delete('/logout', authorization)
-      .then(response => {
-        Cookies.remove('token')
-        Cookies.remove('user')
-        window.location.reload()
-      })
-      .catch(error => {
-        console.error('There was an error making the request!', error);
-      });
+  async function handleLogout(){
+    await api.delete('/logout')
+    Cookies.remove('token')
+    Cookies.remove('user')
+    window.location.reload()
   }
   return(
     <header>

@@ -17,12 +17,7 @@ async function isAuthenticated() {
   }
 
   try {
-    const authorization = {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    };
-    const response = await api.get('/check_session', authorization);
+    const response = await api.get('/check_session');
 
     return response.data.session === 'Authorized';
   } catch (error) {

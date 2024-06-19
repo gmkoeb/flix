@@ -1,13 +1,7 @@
-import Cookies from 'js-cookie'
 import { api } from '../../api/axios'
 
 export async function checkSession(setIsLoggedIn){
-  const authorization = {
-    headers: {
-      'Authorization': `Bearer ${Cookies.get('token')}`
-    }
-  }
-  const response = await api.get('/check_session', authorization)
+  const response = await api.get('/check_session')
 
   if (response.data.session === 'Authorized'){
     setIsLoggedIn(true)

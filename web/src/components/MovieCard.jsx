@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react"
 import { Play, Plus, ThumbsUp, CircleCheck, CircleChevronDown } from "lucide-react"
 import { api } from "../../api/axios"
-import Cookies from 'js-cookie'
 import { Tooltip } from 'react-tooltip'
 
 export default function MovieCard(props){
@@ -41,20 +40,13 @@ export default function MovieCard(props){
     const body = {
       movie_id: movie_id
     }
-    await api.post('/favorite_movies', body, { headers: {
-      'Authorization': `Bearer ${Cookies.get('token')}`
-    } })
+    await api.post('/favorite_movies', body)
   }
 
   async function handleRemoveFavoriteMovie(movie_id){
     setIsFavorite(false)
-    const authorization = {
-      headers: {
-        'Authorization': `Bearer ${Cookies.get('token')}`
-      }
-    }
   
-    await api.delete(`/favorite_movies/${movie_id}`, authorization)
+    await api.delete(`/favorite_movies/${movie_id}`)
     if (props.onRemove) {
       props.onRemove(movie_id)
     }

@@ -16,12 +16,7 @@ export default function Home(){
   const [linkHovered, setLinkHovered] = useState(null)
 
   async function getGenres(){
-    const authorization = {
-      headers: {
-        'Authorization': `Bearer ${Cookies.get('token')}`
-      }
-    }
-    const response = await api.get('/genres', authorization)
+    const response = await api.get('/genres')
     setGenres(response.data.genres)
   }
   
