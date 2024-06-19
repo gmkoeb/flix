@@ -36,13 +36,18 @@ export default function Home(){
           <section id="section" className="mb-10" key={genre.id}>
             <div className="flex align-middle mx-2">
               <Link to={`/movies/${genre.name}`} className="text-2xl font-bold mb-3 flex items-center hover:cursor-pointer">
-                <span onMouseLeave={() => setLinkHovered(null)} onMouseEnter={() => setLinkHovered(genre.name)}>{genre.name}</span>
+                {linkHovered === genre.name ? (
+                  <span className="z-10">{genre.name}</span>
+                ) : (
+                  <span onMouseEnter={() => setLinkHovered(genre.name)}>{genre.name}</span>
+                )
+                }
                 <CSSTransition
                   in={linkHovered === genre.name} 
                   timeout={500}
                   classNames="seeAll"
                   unmountOnExit>
-                  <div className="flex -z-10 h-fit w-fit items-center">
+                  <div onMouseLeave={() => setLinkHovered(null)} className="flex h-fit w-fit items-center">
                     <span className="text-sm ml-4 mt-[6px]">See all</span>
                     <ChevronRight strokeWidth={3} width={26} height={26} className="-mb-1"/>
                   </div>
