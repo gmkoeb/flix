@@ -40,6 +40,7 @@ body{
 .slick-prev{
   position: absolute;
   left: 0;
+  z-index: 1;
   top: 14.5rem;
 }
 
