@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react"
-import { Play, Plus, ThumbsUp, CircleCheck, CircleChevronDown, ThumbsDown } from "lucide-react"
+import { Play, Plus, ThumbsUp, CircleCheck, CircleChevronDown } from "lucide-react"
 import { api } from "../../api/axios"
 import { Tooltip } from 'react-tooltip'
 
@@ -18,15 +18,17 @@ export default function MovieCard(props){
 
   function cardWrapperToggle(){
     if (toggleDescription) {
-      return 'absolute w-[100vw] h-[600vh] z-100 bg-black bg-opacity-50'
+      return 'absolute w-[5500rem] h-[600vh] z-10 bg-black bg-opacity-50 -translate-x-[50%]'
     } 
   }
 
-  function isToggled(){
-    if (toggleDescription) {
-      return 'absolute w-[45%] right-0 left-[27%] z-100 bg-[#111111] rounded-lg h-fit duration-300'
-    } else{
-      return 'bg-[#111111] rounded-lg w-[20rem] h-fit hover:scale-125 duration-300 delay-300 hover:cursor-pointer'
+  function isToggled() {
+    if (toggleDescription && props.context === undefined) {
+      return 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[45vw] z-50 bg-[#111111] rounded-lg h-fit duration-300';
+    } else if (props.context === 'cardOutsideSlider') {
+      return 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[45vw] z-50 bg-[#111111] rounded-lg h-fit duration-300';
+    } else {
+      return 'bg-[#111111] rounded-lg w-[20rem] h-fit hover:scale-125 duration-300 delay-300 hover:cursor-pointer';
     }
   }
 
@@ -70,6 +72,9 @@ export default function MovieCard(props){
     if (toggleDescription) {
       setToggleDescription(false)
     } else {
+      if (props.onMovieClick) {
+        props.onMovieClick(props.id)
+      }
       setToggleDescription(true)
     }
   }   
@@ -93,11 +98,16 @@ export default function MovieCard(props){
   function handleClickOut(){
     setToggleDescription(false)
     setShowControls('hidden')
+    props.setSelectedMovieId(null)
   }
-
   useEffect(() => {
     setIsFavorite(props.isFavorite);
   }, [props.isFavorite])
+  useEffect(() => {
+    if (props.context === 'cardOutsideSlider') {
+      setToggleDescription(true)
+    }
+  }, [props.selectedMovieId])
   return(
     <>
       <section onClick={() => handleClickOut()} className={`${cardWrapperToggle()} -translate-x-10 -translate-y-1/2`}>
@@ -136,7 +146,7 @@ export default function MovieCard(props){
                 </>
               ): (
                 <>
-                  <ThumbsUp data-tooltip-id="like" data-tooltip-content="Like" onClick={() => handleLike(props.id)} trokeWidth={3} width={28} height={28} className="hover:cursor-pointer border-2 rounded-full p-1 font-bold" />
+                  <ThumbsUp data-tooltip-id="like" data-tooltip-content="Like" onClick={() => handleLike(props.id)} strokeWidth={3} width={28} height={28} className="hover:cursor-pointer border-2 rounded-full p-1 font-bold" />
                   <Tooltip id="like" />
                 </>
               )}

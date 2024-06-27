@@ -17,4 +17,8 @@ class LikedMoviesController < ApplicationController
     favorite_movie = @current_user.liked_movies.find_by(movie_id: id)
     favorite_movie.delete
   end
+
+  def most_liked
+    render status: 200, json: { mostLiked: Movie.format_movies(Movie.all.order(like_count: :desc).take(10))}
+  end
 end

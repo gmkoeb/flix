@@ -2,16 +2,20 @@ import { useEffect, useState } from "react"
 import MovieCard from "../components/MovieCard"
 import { Link } from "react-router-dom"
 import { getFavoriteMovies } from "../lib/getFavoriteMovies"
+import { getLikedMovies } from "../lib/getLikedMovies"
+import { checkIfMovieIsLiked } from "../lib/checkIfMovieIsLiked"
 
 export default function FavoriteMovies(){
   const [favoriteMovies, setFavoriteMovies] = useState([])
-  
+  const [likedMovies, setLikedMovies] = useState([])
+
   const handleRemoveFavorite = (id) => {
     setFavoriteMovies(favoriteMovies.filter(movie => movie.id !== id))
   }
 
   useEffect(() => {
     getFavoriteMovies(setFavoriteMovies)
+    getLikedMovies(setLikedMovies)
   }, [])
   return(
     <section>
@@ -30,6 +34,7 @@ export default function FavoriteMovies(){
                   releaseDate={movie.release_date}
                   movieGenres={movie.movie_genres}
                   isFavorite={true}
+                  isLiked={checkIfMovieIsLiked(movie, likedMovies)}
                   onRemove={handleRemoveFavorite} />
             ))}
           </>
